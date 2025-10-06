@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uzum Market</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>Uzum Market</h1>
+                </div>
+                <div class="header-actions">
+                    <a href="/api/products/wishlist-page/" class="header-link">
+                        <span class="icon">❤️</span>
+                        <span>Sevimlilar</span>
+                        <span class="badge" id="wishlist-count">0</span>
+                    </a>
+                    <a href="/api/products/cart/" class="header-link">
+                        <span class="icon">🛒</span>
+                        <span>Savat</span>
+                        <span class="badge" id="cart-count">0</span>
+                    </a>
+                    <a href="/auth/profile/" class="header-link">
+                        <span class="icon">👤</span>
+                        <span>{{ request.user.username }}</span>
+                    </a>
+                    <a href="/auth/logout/" class="header-link">Chiqish</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <!-- Categories Section -->
+            <section class="categories-section">
+                <h2 class="section-title">Kategoriyalar</h2>
+                <div class="categories-grid">
+                    {% for category in categories %}
+                    <a href="/api/products/category/{{ category.id }}/" class="category-card">
+                        {% if category.image %}
+                        <img src="{{ category.image.url }}" alt="{{ category.name }}">
+                        {% else %}
+                        <div class="category-placeholder">📦</div>
+                        {% endif %}
+                        <h3>{{ category.name }}</h3>
+                    </a>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <!-- Flash Sales Section -->
+            {% if flash_sales %}
+            <section class="products-section">
+                <h2 class="section-title">🔥 Chegirmali mahsulotlar</h2>
+                <div class="products-grid">
+                    {% for product in flash_sales %}
+                    <div class="product-card" data-product-id="{{ product.id }}">
+                        <button class="wishlist-btn" onclick="toggleWishlist({{ product.id }})">
+                            <span class="heart">🤍</span>
+                        </button>
+                        <div class="product-image">
+                            {% if product.images.all %}
+                            <img src="{{ product.images.first.image.url }}" alt="{{ product.name }}">
+                            {% else %}
+                            <div class="image-placeholder">📷</div>
+                            {% endif %}
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">{{ product.name }}</h3>
+                            <p class="product-description">{{ product.short_description }}</p>
+                            <div class="product-price">
+                                <span class="price-old">{{ product.price }} so'm</span>
+                                <span class="price-new">{{ product.discount_price }} so'm</span>
+                            </div>
+                            <button class="btn-add-cart" onclick="addToCart({{ product.id }}, '{{ product.name }}', {{ product.discount_price }})">
+                                Savatga qo'shish
+                            </button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+
+            <!-- All Products Section -->
+            <section class="products-section">
+                <h2 class="section-title">Barcha mahsulotlar</h2>
+                <div class="products-grid">
+                    {% for product in products %}
+                    <div class="product-card" data-product-id="{{ product.id }}">
+                        <button class="wishlist-btn" onclick="toggleWishlist({{ product.id }})">
+                            <span class="heart">🤍</span>
+                        </button>
+                        <div class="product-image">
+                            {% if product.images.all %}
+                            <img src="{{ product.images.first.image.url }}" alt="{{ product.name }}">
+                            {% else %}
+                            <div class="image-placeholder">📷</div>
+                            {% endif %}
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">{{ product.name }}</h3>
+                            <p class="product-description">{{ product.short_description }}</p>
+                            <div class="product-price">
+                                {% if product.discount_price %}
+                                <span class="price-old">{{ product.price }} so'm</span>
+                                <span class="price-new">{{ product.discount_price }} so'm</span>
+                                {% else %}
+                                <span class="price-current">{{ product.price }} so'm</span>
+                                {% endif %}
+                            </div>
+                            <button class="btn-add-cart" onclick="addToCart({{ product.id }}, '{{ product.name }}', {{ product.discount_price|default:product.price }})">
+                                Savatga qo'shish
+                            </button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="/static/js/main.js"></script>
+</body>
+</html>

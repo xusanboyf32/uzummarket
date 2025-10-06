@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sevimlilar - Uzum Market</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="/api/products/home/"><h1>Uzum Market</h1></a>
+                </div>
+                <div class="header-actions">
+                    <a href="/api/products/wishlist-page/" class="header-link active">
+                        <span class="icon">❤️</span>
+                        <span>Sevimlilar</span>
+                    </a>
+                    <a href="/api/products/cart/" class="header-link">
+                        <span class="icon">🛒</span>
+                        <span>Savat</span>
+                    </a>
+                    <a href="/auth/logout/" class="header-link">Chiqish</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <h1 class="page-title">Sevimli mahsulotlar</h1>
+
+            <div class="products-grid" id="wishlist-products">
+                <!-- Wishlist items will be loaded here by JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <script src="/static/js/wishlist.js"></script>
+</body>
+</html>
